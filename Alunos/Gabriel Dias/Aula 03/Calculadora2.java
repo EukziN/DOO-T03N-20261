@@ -46,7 +46,7 @@ public class Calculadora2 {
             calculaTotal();
         }
         if (quantidade > 10){
-            quantidade *= 0.9;
+            quantidade *= 0.95;
         }
         System.out.print("Digite o preco do produto: ");
         double preco = scanner.nextDouble();
