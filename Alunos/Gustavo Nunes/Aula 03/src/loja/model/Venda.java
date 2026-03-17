@@ -17,8 +17,8 @@ public class Venda {
     }
 
     @Override
-    public String toString(){
-        return "  " + id + "  " + quant + "  " + valVen + "  "
-                + desconto + "  " + valFin;
+    public String toString() {
+        return String.format("  %-3d   %-10d   %-10.2f   %-10.2f   %-10.2f  ",
+                id, quant, valVen, desconto, valFin);
     }
 }

@@ -13,66 +13,65 @@ public class VendaController {
     // onde serão armazenadas as vendas
     private  ArrayList<Venda> vendas = new ArrayList<>();
 
+    // o que move o programa
     public void iniciar() {
-        mostraMenu();
+
+        int op;
+
+        do {
+            op = mostraMenu();
+            processaOp(op);
+        } while (op != 6);
     }
 
     // Mostra menu ao usuário
-    private void mostraMenu() {
+    private int mostraMenu() {
 
-        System.out.printf("\n========================================\n" +
-                "[1] - Calcular apenas Preço\n" +
-                "[2] - Calcular apenas Troco\n" +
-                "[3] - Calcular apenas desconto\n" +
-                "[4] - Cadastrar compra\n" +
-                "[5] - Listar compras\n" +
+        System.out.printf("\n=============================================================\n" +
+                "[1] - Cadastrar nova Venda\n" +
+                "[2] - Listar vendas cadastradas\n" +
+                "[3] - Apenas calcular preço\n" +
+                "[4] - Apenas calcular troco\n" +
+                "[5] - Apenas calcular desconto\n" +
                 "[6] - Sair\n" +
-                "========================================\n" +
+                "=============================================================\n" +
                 "Entre com a opção : ");
 
-        direcionaUzuario();
+        return scanner.nextInt();
     }
 
     // direciona usuário para opção escolhida
-    private void direcionaUzuario() {
-
-        int op = scanner.nextInt();
+    private void processaOp(int op) {
 
         switch (op){
 
-            case 4:
-                cadastraVenda();
-                mostraMenu();
-                break;
-
-            case 5:
-                listaCompras();
-                mostraMenu();
-                break;
-
             case 1:
-                calculaPreco();
-                mostraMenu();
+                cadastraVenda();
                 break;
 
             case 2:
-                calculaTroco();
-                mostraMenu();
+                listaCompras();
                 break;
 
             case 3:
+                calculaPreco();
+                break;
+
+            case 4:
+                calculaTroco();
+                break;
+
+            case 5:
                 calculaDesconto();
-                mostraMenu();
                 break;
 
             case 6:
-                System.out.println("\nENCERRANDO...");
+                System.out.println("\nSAINDO...");
                 break;
 
             default:
-                mostraMenu();
+                System.out.println("\nOpção inválida! Tente novamente!");
                 break;
-
         }
     }
 
@@ -83,12 +82,13 @@ public class VendaController {
         System.out.println("\nValor unitário: ");
         double valUni = scanner.nextDouble();
 
-        double desconto = VendaService.calculaDesconto(quant,valUni);
         double valVenda = VendaService.calculaPreco(quant,valUni);
+        double desconto = VendaService.calculaDesconto(quant,valVenda);
         vendas.add(VendaService.cadastraVenda(quant,valVenda,desconto));
 
-        System.out.println("venda cadastrada com sucesso cadastrada com sucesso!");
+        System.out.println("venda cadastrada com sucesso!");
     }
+
 
     // Lista compras realizadas
     private void listaCompras() {
@@ -98,9 +98,18 @@ public class VendaController {
             return;
         }
 
-        for (Venda m : vendas){
+        System.out.printf(
+                "\n-------------------------------------------------------------\n" +
+                "  %-3s   %-10s   %-10s   %-10s   %-10s  \n" +
+                "-------------------------------------------------------------\n",
+                "ID", "QUANTIDADE", "V.TOTAL", "DESCONTO", "V.PAGO");
+
+        for (Venda m : vendas) {
             System.out.println(m);
         }
+
+        System.out.println("-------------------------------------------------------------");
+
     }
 
     // Calculo do Preço
